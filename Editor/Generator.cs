@@ -365,7 +365,7 @@ namespace Destringer {
     }
 
     static void AddConstantName(StringBuilder sb, Parameter parameter) {
-      sb.Append(parameter.name);
+      sb.Append(StringUtility.PascalCase(parameter.name));
       sb.Append("Property");
     }
 
@@ -416,7 +416,7 @@ namespace Destringer {
       sb.Append(' ');
       sb.Append(ParameterTypeToType(parameter.type));
       sb.Append(' ');
-      sb.Append(parameter.name);
+      sb.Append(StringUtility.PascalCase(parameter.name));
       OpenBlock(sb, ref indent);
       {
         NewLine(sb, indent);

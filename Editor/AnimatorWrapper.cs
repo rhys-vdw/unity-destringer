@@ -3,8 +3,6 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace Destringer {
   [CreateAssetMenu(fileName = "AnimatorWrapper", menuName = "Destringer/AnimatorWrapper")]
@@ -36,9 +34,11 @@ namespace Destringer {
       }
 
       // Use specified class name or generate one from the controller.
-      var className = string.IsNullOrWhiteSpace(ClassName)
-        ? PascalCase(AnimatorController.name)
-        : ClassName.Trim();
+      var className = StringUtility.PascalCase(
+        string.IsNullOrWhiteSpace(ClassName)
+          ? AnimatorController.name
+          : ClassName.Trim()
+      );
 
       var generated = Generator.GenerateFromController(
         AnimatorController,
@@ -121,15 +121,6 @@ namespace Destringer {
         }
       }
       return result;
-    }
-
-    // see: https://stackoverflow.com/a/55615973
-    static string PascalCase(string str) {
-      TextInfo cultInfo = new CultureInfo("en-US", false).TextInfo;
-      str = Regex.Replace(str, "([A-Z]+)", " $1");
-      str = cultInfo.ToTitleCase(str);
-      str = str.Replace(" ", "");
-      return str;
     }
   }
 }
