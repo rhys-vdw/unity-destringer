@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Destringer {
-  [CreateAssetMenu(fileName = "AnimatorWrapperGroup", menuName = "AnimatorWrapper/Group")]
+  [CreateAssetMenu(fileName = "AnimatorWrapper", menuName = "Destringer/AnimatorWrapper")]
   public class AnimatorWrapper : ScriptableObject {
     public static readonly string DefaultScriptPath = "AnimatorWrapper/Generated/Scripts";
     public static readonly string DefaultWrapperPath = "AnimatorWrapper/Generated/AnimationWrappers";
