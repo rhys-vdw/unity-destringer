@@ -9,12 +9,9 @@ result developers do not get compile-time checks on their parameter names, or
 auto-complete in their code editor.
 
 I found that I was often writing a lot of boilerplate to wrap `Animator`
-methods (e.g. `GetFloat`, `SetFloat` etc.) in C# properties.
-
-I made this tool that automates this process, generating a script that
-perfectly matches
-
-Creates a C# interface for your `RuntimeAnimationController` state machines, and keeps it up to date.
+methods (e.g. `GetFloat`, `SetFloat` etc.) in C# properties. This tool
+automates this process, generating a script exposes a property for each state
+machine parameter, and regenerates when they change.
 
 ## Install
 
@@ -36,11 +33,15 @@ Unity will download the package automatically.
 
 ### Assets > Destringer > AnimatorWrapper
 
-Create an AnimatorWrapper object that can be configured to generate a script. Once given a `RuntimeAnimationController` hit the "Generate" button. This object will automatically update the script whenever its assigned controller changes.
+Create an AnimatorWrapper object that can be configured to generate a script.
+Once given a `RuntimeAnimationController` hit the "Generate" button. This
+object will automatically update the script whenever its assigned controller
+changes.
 
 ### Tools > Destringer > Attach animator wrappers
 
-This will attach generated scripts to any selected GameObject's with animators, creating and updating as necessary.
+This will attach generated scripts to any selected GameObject's with
+animators, creating and updating as necessary.
 
 ## Example
 
