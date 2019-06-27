@@ -1,0 +1,12 @@
+{
+  "name": "games.feed.unity-destringer",
+  "version": "1.0.0-rc1",
+  "displayName": "Destringer",
+  "description": "Code generation tool type string-based Unity3D APIs",
+  "unity": "2019.1",
+  "author": {
+    "name" : "Rhys van der Waerden",
+    "email" : "rhys@feed.games",
+    "url" : "https://feed.games/"
+  }
+}
