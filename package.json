@@ -1,5 +1,5 @@
 {
-  "name": "games.feed.unity-destringer",
+  "name": "games.feed.destringer",
   "version": "1.0.0-rc1",
   "displayName": "Destringer",
   "description": "Code generation tool type string-based Unity3D APIs",
