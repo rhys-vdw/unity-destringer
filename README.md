@@ -8,10 +8,9 @@ Unity3D uses a string-based API to control its animation state machines. As a
 result developers do not get compile-time checks on their parameter names, or
 auto-complete in their code editor.
 
-I found that I was often writing a lot of boilerplate to wrap `Animator`
-methods (e.g. `GetFloat`, `SetFloat` etc.) in C# properties. This tool
-automates this process, generating a script exposes a property for each state
-machine parameter, and regenerates when they change.
+This tool automates this process of writing `Animator` boilerplate,
+generating a script exposes a property for each state machine parameter, and
+regenerating when they change.
 
 ## Install
 
@@ -40,7 +39,7 @@ changes.
 
 ### Tools > Destringer > Attach animator wrappers
 
-This will attach generated scripts to any selected GameObject's with
+This will attach generated scripts to any selected GameObjects with
 animators, creating and updating as necessary.
 
 ## Example
