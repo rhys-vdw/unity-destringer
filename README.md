@@ -30,7 +30,7 @@ Unity will download the package automatically.
 
 ## Usage
 
-### Assets > Destringer > AnimatorWrapper
+### Assets > Create > Destringer > AnimatorWrapper
 
 Create an AnimatorWrapper object that can be configured to generate a script.
 Once given a `RuntimeAnimationController` hit the "Generate" button. This
