@@ -300,7 +300,7 @@ namespace Destringer {
       sb.Append('.');
       sb.Append(nameof(Animator.runtimeAnimatorController));
       sb.Append(" != null");
-      sb.AppendLine(" && ");
+      sb.AppendLine(" &&");
 
       // Check parameter count.
       NewLine(sb, indent);
@@ -308,7 +308,7 @@ namespace Destringer {
       sb.Append(".parameterCount == ");
       sb.Append(parameters.Length);
       if (parameters.Length > 0) {
-        sb.AppendLine(" && ");
+        sb.AppendLine(" &&");
       }
 
       // Check each parameter.
@@ -323,7 +323,7 @@ namespace Destringer {
         sb.Append(nameof(ParameterType));
         sb.Append('.');
         sb.Append(parameters[i].type);
-        sb.AppendLine(" && ");
+        sb.AppendLine(" &&");
 
         // Check parameter name hash.
         NewLine(sb, indent);
@@ -334,7 +334,7 @@ namespace Destringer {
         AddConstantName(sb, parameters[i]);
 
         if (i < parameters.Length - 1) {
-          sb.AppendLine(" && ");
+          sb.AppendLine(" &&");
         }
       }
 
