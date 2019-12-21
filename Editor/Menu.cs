@@ -7,10 +7,12 @@ using UnityEditorInternal;
 
 namespace Destringer {
   static class Menu {
-    [MenuItem("Tools/Destringer/Attach animator wrappers")]
+    [MenuItem("Tools/Destringer/Update animator wrappers for selection")]
     static void GenerateFromSelection() {
       var gameObjects = Selection.gameObjects;
-      var animators = new List<Animator>(gameObjects.Length);
+      var animatorsByController = new Dictionary<RuntimeAnimatorController, List<Animator>>(gameObjects.Length);
+
+      // Find controllers in selected game objects (scene objects and prefabs).
       for (int i = 0; i < gameObjects.Length; i++) {
         var gameObject = gameObjects[i];
         var animator = gameObject.GetComponent<Animator>();
@@ -18,20 +20,41 @@ namespace Destringer {
           Debug.LogWarning($"No animator found on {gameObject}", gameObject);
         } else if (animator.runtimeAnimatorController == null) {
           Debug.LogWarning($"Animator has no {nameof(UnityEngine.RuntimeAnimatorController)}", animator);
-        } {
-          animators.Add(animator);
+        } else {
+          var controller = animator.runtimeAnimatorController;
+          if (animatorsByController.TryGetValue(controller, out var animators)) {
+            animators.Add(animator);
+          } else {
+            animatorsByController[controller] = new List<Animator> { animator };
+          }
         }
       }
-      if (animators.Count == 0) {
-        Debug.LogError($"No {typeof(RuntimeAnimatorController)}s selected");
+
+      // Find any selected controller assets from the project.
+      var assetGuids = Selection.assetGUIDs;
+      for (int i = 0; i < assetGuids.Length; i++) {
+        var path = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
+        var controller = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(path) as RuntimeAnimatorController;
+        if (controller != null) {
+          if (!animatorsByController.TryGetValue(controller, out var animators)) {
+            animatorsByController[controller] = new List<Animator>();
+          }
+        }
+      }
+
+      if (animatorsByController.Count == 0) {
+        Debug.LogError($"Select {nameof(RuntimeAnimatorController)} assets or {nameof(GameObject)}s with animators before running this command.");
         return;
       }
+
+      // Find or create wrappers as required.
       var allWrappers = AnimatorWrapper.LoadAll();
       var toGenerate = new List<AnimatorWrapper>();
-      foreach (var animator in animators) {
-        var wrapper = allWrappers.Find(a => a.AnimatorController == animator.runtimeAnimatorController);
+      foreach (var kvp in animatorsByController) {
+        var controller = kvp.Key;
+        var animators = kvp.Value;
+        var wrapper = allWrappers.Find(a => a.AnimatorController == controller);
         if (wrapper == null) {
-          var controller = animator.runtimeAnimatorController;
           wrapper = AnimatorWrapper.Create(controller);
           wrapper.name = $"{controller.name}{nameof(AnimatorWrapper)}";
           var path = AnimatorWrapper.DefaultWrapperPath;
@@ -44,12 +67,20 @@ namespace Destringer {
         }
         toGenerate.Add(wrapper);
       }
+
+      // Regenerate all assets.
       AnimatorWrapper.GenerateAndRefresh(toGenerate);
-      for (int i = 0; i < animators.Count; i++) {
-        var scriptName = toGenerate[i].GeneratedScriptAsset.name;
-        var prevComponent = animators[i].gameObject.GetComponent(scriptName);
-        if (prevComponent == null) {
-          AddScriptComponent(animators[i].gameObject, toGenerate[i].GeneratedScriptAsset);
+
+      // Attach the updated controllers to any animators that were selected.
+      for (var i = 0; i < toGenerate.Count; i++) {
+        var generated = toGenerate[i];
+        var scriptName = generated.GeneratedScriptAsset.name;
+        var animators = animatorsByController[generated.AnimatorController];
+        for (var j = 0; j < animators.Count; j++) {
+          var prevComponent = animators[j].gameObject.GetComponent(scriptName);
+          if (prevComponent == null) {
+            AddScriptComponent(animators[j].gameObject, generated.GeneratedScriptAsset);
+          }
         }
       }
     }
