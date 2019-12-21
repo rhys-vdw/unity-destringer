@@ -29,7 +29,7 @@ namespace Destringer {
       var allWrappers = AnimatorWrapper.LoadAll();
       var toGenerate = new List<AnimatorWrapper>();
       foreach (var animator in animators) {
-        var wrapper = allWrappers.Find(a => a.AnimatorController == animator);
+        var wrapper = allWrappers.Find(a => a.AnimatorController == animator.runtimeAnimatorController);
         if (wrapper == null) {
           var controller = animator.runtimeAnimatorController;
           wrapper = AnimatorWrapper.Create(controller);
