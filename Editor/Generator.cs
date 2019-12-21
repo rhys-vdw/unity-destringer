@@ -254,31 +254,48 @@ namespace Destringer {
       {
 
         NewLine(sb, indent); sb.AppendLine("var animators = GetComponentsInChildren<Animator>();");
-        NewLine(sb, indent);
-        sb.Append("foreach (var animator in animators)");
-        OpenBlock(sb, ref indent);
-        {
-          NewLine(sb, indent);
-          sb.Append("if (IsCompatible(animator))");
-          OpenBlock(sb, ref indent);
-          {
-            NewLine(sb, indent);
-            sb.Append(AnimatorFieldName);
-            sb.AppendLine(" = animator;");
 
-            NewLine(sb, indent);
-            sb.AppendLine("return;");
+        void FindAssignAndReturn(string condition, ref int ind) {
+          NewLine(sb, ind); sb.Append("foreach (var animator in animators)");
+          OpenBlock(sb, ref ind);
+          {
+            NewLine(sb, ind);
+            sb.Append("if (");
+            sb.Append(condition);
+            sb.Append(")");
+            OpenBlock(sb, ref ind);
+            {
+              NewLine(sb, ind);
+              sb.Append(AnimatorFieldName);
+              sb.AppendLine(" = animator;");
+
+              NewLine(sb, ind);
+              sb.AppendLine("return;");
+            }
+            // Close `if`
+            CloseBlock(sb, ref ind);
           }
-          // Close `if`
-          CloseBlock(sb, ref indent);
+          // Close `foreach`
+          CloseBlock(sb, ref ind);
         }
-        // Close `foreach`
-        CloseBlock(sb, ref indent);
+
+        // Find a compatible animator. It's not possible to detect with an
+        // uninitialized animator.
+        FindAssignAndReturn("animator.isInitialized && IsCompatible(animator)", ref indent);
+
+        // If we didn't find one then just find the first possible false negative.
+        // NOTE: This should only happen when the selected object is a prefer in
+        // the project view. This could result in the wrong animator being
+        // assigned, but only in the case where there are multiple animators
+        // attached to the same prefab.
+        FindAssignAndReturn("!animator.isInitialized", ref indent);
 
         NewLine(sb, indent);
         sb.Append("Debug.LogWarning(\"Unable to find animator with compatible ");
         sb.Append(nameof(RuntimeAnimatorController));
-        sb.AppendLine(" in GameObject\", this);");
+        sb.Append(" in ");
+        sb.Append(nameof(GameObject));
+        sb.AppendLine("\", this);");
       }
       CloseBlock(sb, ref indent);
     }
