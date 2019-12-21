@@ -7,8 +7,8 @@ using System.Text;
 namespace Destringer {
   [CreateAssetMenu(fileName = "AnimatorWrapper", menuName = "Destringer/AnimatorWrapper")]
   public class AnimatorWrapper : ScriptableObject {
-    public static readonly string DefaultScriptPath = "AnimatorWrapper/Generated/Scripts";
-    public static readonly string DefaultWrapperPath = "AnimatorWrapper/Generated/AnimationWrappers";
+    public static readonly string DefaultScriptPath = $"{nameof(Destringer)}/Generated/Scripts";
+    public static readonly string DefaultWrapperPath = $"{nameof(Destringer)}/Generated/{nameof(AnimatorWrapper)}s";
 
     public MonoScript GeneratedScriptAsset;
     public RuntimeAnimatorController AnimatorController;
