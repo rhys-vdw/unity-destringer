@@ -15,7 +15,6 @@ namespace Destringer {
     public AccessModifier AccessModifier = AccessModifier.Public;
     public string ClassName = null;
     public string Namespace = null;
-    public string GeneratedScriptPath = DefaultScriptPath;
     public bool IsPartial = false;
 
     public static AnimatorWrapper Create(RuntimeAnimatorController controller) {
@@ -65,7 +64,7 @@ namespace Destringer {
         scriptAssetPath = AssetDatabase.GetAssetPath(GeneratedScriptAsset);
       } else {
         // If not, decide where it will go.
-        scriptAssetPath = $"Assets/{GeneratedScriptPath}/{filename}";
+        scriptAssetPath = $"Assets/{DefaultScriptPath}/{filename}";
       }
 
       // Directory and asset paths.
