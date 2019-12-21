@@ -19,7 +19,7 @@ namespace Destringer {
         if (animator == null) {
           Debug.LogWarning($"No animator found on {gameObject}", gameObject);
         } else if (animator.runtimeAnimatorController == null) {
-          Debug.LogWarning($"Animator has no {nameof(UnityEngine.RuntimeAnimatorController)}", animator);
+          Debug.LogWarning($"Animator on {gameObject} has no {nameof(UnityEngine.RuntimeAnimatorController)}", animator);
         } else {
           var controller = animator.runtimeAnimatorController;
           if (animatorsByController.TryGetValue(controller, out var animators)) {
