@@ -1,8 +1,8 @@
 {
   "name": "games.feed.destringer",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc2",
   "displayName": "Destringer",
-  "description": "Code generation tool type string-based Unity3D APIs",
+  "description": "Code generation tool for Unity3D that wraps the string-based Animator API",
   "unity": "2019.1",
   "author": {
     "name" : "Rhys van der Waerden",
