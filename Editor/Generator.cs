@@ -46,9 +46,8 @@ namespace Destringer {
     }
 
     static Parameter[] GetParameters(Controller controller) {
-      GameObject gameObject = null;
+      var gameObject = new GameObject() { hideFlags = HideFlags.HideAndDontSave };
       try {
-        gameObject = new GameObject() { hideFlags = HideFlags.HideAndDontSave };
         var animator = gameObject.AddComponent<Animator>();
         animator.runtimeAnimatorController = controller;
         return animator.parameters;
