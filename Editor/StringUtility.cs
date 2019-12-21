@@ -11,5 +11,13 @@ namespace Destringer {
       str = str.Replace(" ", "");
       return str;
     }
+
+    // see: https://stackoverflow.com/a/8200722/317135
+    public static string Center(this string stringToCenter, int totalLength) {
+      return stringToCenter
+        .PadLeft(
+          ((totalLength - stringToCenter.Length) / 2) + stringToCenter.Length
+        ).PadRight(totalLength);
+    }
   }
 }
